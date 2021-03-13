@@ -1,16 +1,13 @@
 from fastapi import FastAPI
 
+from .routers import services, welcome
+
 app = FastAPI()
 
-@app.get("/api/welcome")
-def welcome():
-    return {"welcomeMessage": "Welcome to Realize Security"}
+app.include_router(services.router)
+app.include_router(welcome.router)
 
 
-@app.get("/api/services")
-def services():
-    return {"services": [
-        "Penetration testing",
-        "Shenanigans"
-    ]
-}
+@app.get("/")
+def root():
+    return welcome.welcome()
