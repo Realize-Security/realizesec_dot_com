@@ -1,4 +1,3 @@
-import pytest
 
 from rsec import app
 
