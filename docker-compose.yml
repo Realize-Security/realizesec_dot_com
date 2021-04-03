@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  rsec:
+    build:
+      context: ""
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./rsec:/rsec
+    command: >
+      sh -c "/usr/bin/python3 wsgi.py"

@@ -1,13 +1,15 @@
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8
+FROM python:3.9-alpine
 
-LABEL maintainer="Realize Security Ld."
+LABEL maintainer="Realize Security Ltd."
 
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV export PYTHONDONTWRITEBYTECODE=1
+ENV export PYTHONUNBUFFERED=1
 
 COPY ./requirements.txt /requirements.txt
 RUN /usr/local/bin/python -m pip install --upgrade pip
 RUN pip install -r /requirements.txt
 
-COPY ./app /app
+COPY ./rsec /rsec
 
+RUN adduser -D user
+USER user
