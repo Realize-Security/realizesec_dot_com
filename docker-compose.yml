@@ -1,12 +1,13 @@
-version: "3"
+version: "3.9"
 
 services:
-  rsec:
-    build:
-      context: ""
+  web:
+    build: .
+    environment:
+      - PYTHONUNBUFFERED=0
+      - PYTHONDONTWRITEBYTECODE=1
     ports:
       - "5000:5000"
     volumes:
-      - ./rsec:/rsec
-    command: >
-      sh -c "/usr/bin/python3 wsgi.py"
+      - /opt/rsecdotcom:/rsecdotcom
+    container_name: "rsec_main_website"

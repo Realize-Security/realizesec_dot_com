@@ -4,12 +4,20 @@ LABEL maintainer="Realize Security Ltd."
 
 ENV export PYTHONDONTWRITEBYTECODE=1
 ENV export PYTHONUNBUFFERED=1
+ENV export FLASK_APP=app.py
 
-COPY ./requirements.txt /requirements.txt
+RUN adduser -D dockeruser
+
+WORKDIR /home/dockeruser
+
+COPY . . 
+
 RUN /usr/local/bin/python -m pip install --upgrade pip
-RUN pip install -r /requirements.txt
+RUN pip install -r requirements.txt
 
-COPY ./rsec /rsec
+RUN chown dockeruser:dockeruser ./
+USER dockeruser
 
-RUN adduser -D user
-USER user
+EXPOSE 5000
+
+CMD ["python", "manage.py", "runserver"]
