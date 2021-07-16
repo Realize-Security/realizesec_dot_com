@@ -1,23 +1,30 @@
-FROM python:3.9-alpine
+FROM tiangolo/uvicorn-gunicorn:python3.8-alpine3.10
 
 LABEL maintainer="Realize Security Ltd."
 
-ENV export PYTHONDONTWRITEBYTECODE=1
-ENV export PYTHONUNBUFFERED=1
-ENV export FLASK_APP=app.py
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+# Create virtualenv path and add to front of $PATH
+ENV VIRTUAL_ENV=/opt/venv
+RUN python3 -m venv $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-RUN adduser -D dockeruser
-
-WORKDIR /home/dockeruser
-
-COPY . . 
-
-RUN /usr/local/bin/python -m pip install --upgrade pip
-RUN pip install -r requirements.txt
-
-RUN chown dockeruser:dockeruser ./
-USER dockeruser
+COPY ./requirements.txt /requirements.txt 
+COPY ./app /app
+COPY ./scripts /scripts
 
 EXPOSE 5000
 
-CMD ["python", "manage.py", "runserver"]
+RUN python3 -m pip install --upgrade pip && \
+    apk add --no-cache --virtual .build-deps gcc libc-dev make && \
+    pip install --no-cache-dir "uvicorn[standard]" && \
+    apk del .build-deps gcc libc-dev make && \
+    pip install -r /requirements.txt && \
+    adduser --disabled-password --no-create-home rsecuser && \
+    chmod -R 0775 /app && \
+    chmod -R 0775 /scripts
+
+WORKDIR /app
+USER rsecuser
+
+CMD ["/scripts/run.sh"]
