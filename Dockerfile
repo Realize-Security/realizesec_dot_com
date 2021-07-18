@@ -9,19 +9,21 @@ ENV VIRTUAL_ENV=/opt/venv
 RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-COPY ./requirements.txt /requirements.txt 
-COPY ./app /app
-COPY ./scripts /scripts
-
 EXPOSE 5000
 
 RUN python3 -m pip install --upgrade pip && \
     apk add --no-cache --virtual .build-deps gcc libc-dev make && \
     pip install --no-cache-dir "uvicorn[standard]" && \
     apk del .build-deps gcc libc-dev make && \
-    pip install -r /requirements.txt && \
-    adduser --disabled-password --no-create-home rsecuser && \
-    chmod -R 0775 /app && \
+    adduser --disabled-password --no-create-home rsecuser
+
+COPY ./requirements.txt /requirements.txt 
+RUN pip install -r /requirements.txt
+
+COPY ./app /app
+COPY ./scripts /scripts
+
+RUN chmod -R 0775 /app && \
     chmod -R 0775 /scripts
 
 WORKDIR /app
