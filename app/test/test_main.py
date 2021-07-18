@@ -15,7 +15,7 @@ def test_root_to_is_home():
 
 
 def test_home():
-    response = client.get("/")
+    response = client.get("/home")
     assert(response.status_code == 200)
     assert 'Welcome to Realize Security' in response.text
     assert COPYRIGHTS in response.text
