@@ -7,7 +7,7 @@ client = TestClient(app)
 COPYRIGHTS = 'All Rights Reserved by Realize Security Ltd.'
 
 # Navigating to '/' should return the home page
-def test_root_to_is_home():
+def test_root_is_to_home():
     response = client.get("/")
     assert(response.status_code == 200)
     assert 'Welcome to Realize Security' in response.text
