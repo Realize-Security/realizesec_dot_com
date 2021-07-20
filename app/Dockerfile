@@ -15,7 +15,8 @@ RUN python3 -m pip install --upgrade pip && \
     apk add --no-cache --virtual .build-deps gcc libc-dev make && \
     pip install --no-cache-dir "uvicorn[standard]" && \
     apk del .build-deps gcc libc-dev make && \
-    adduser --disabled-password --no-create-home rsecuser
+    adduser --disabled-password --no-create-home rsecuser && \
+    mkdir -p /vol/app/static
 
 COPY ./requirements.txt /requirements.txt 
 RUN pip install -r /requirements.txt
@@ -23,8 +24,9 @@ RUN pip install -r /requirements.txt
 COPY ./app /app
 COPY ./scripts /scripts
 
-RUN chmod -R 0775 /app && \
-    chmod -R 0775 /scripts
+RUN chmod -R 0775 /app \
+    /scripts \
+    /vol
 
 WORKDIR /app
 USER rsecuser

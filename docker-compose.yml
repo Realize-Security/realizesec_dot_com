@@ -2,6 +2,22 @@ version:  "3.9"
 
 services: 
     app:
-      build: .
-      ports: 
-        - 5000:5000
+      build:
+        context: ./app
+      restart: always
+      volumes:
+        - static-data:/vol/app
+
+    nginx:
+      build: 
+        context: ./nginx
+      restart: always
+      ports:
+        - 80:80
+      depends_on: 
+        - app
+      volumes:
+        - static-data:/vol/static
+
+volumes:
+  static-data:
