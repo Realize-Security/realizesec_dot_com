@@ -16,19 +16,19 @@ RUN python3 -m pip install --upgrade pip && \
     pip install --no-cache-dir "uvicorn[standard]" && \
     apk del .build-deps gcc libc-dev make && \
     adduser --disabled-password --no-create-home rsecuser && \
-    mkdir -p /vol/app/static
+    mkdir -p /vol/static && \
+    chown -R rsecuser:rsecuser /vol/static
 
 COPY ./requirements.txt /requirements.txt 
 RUN pip install -r /requirements.txt
 
 COPY ./app /app
-COPY ./scripts /scripts
+COPY ./scripts /app/scripts
 
-RUN chmod -R 0775 /app \
-    /scripts \
+RUN chmod -R 0755 \
+    /app \
     /vol
 
-WORKDIR /app
 USER rsecuser
 
-CMD ["/scripts/run.sh"]
+CMD ["/app/scripts/run.sh"]

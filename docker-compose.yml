@@ -6,7 +6,7 @@ services:
         context: ./app
       restart: always
       volumes:
-        - static-data:/vol/app
+        - static-data:/vol/static
 
     nginx:
       build: 
