@@ -11,13 +11,21 @@ services:
     nginx:
       build: 
         context: ./nginx
+        args:
+          SSL_PARAMS_PATH: "/etc/nginx/snippets/ssl-params.conf"
+          SSL_PRIVKEY: "privkey.pem"
+          SSL_FULLCHAIN: "fullchain.pem"
+          DEPLOY_ENV: "PROD"
       restart: always
       ports:
+        - 443:443
         - 80:80
       depends_on: 
         - app
       volumes:
         - static-data:/vol/static
+        - logging:/vol/log/nginx
 
 volumes:
-  static-data:
+    logging:
+    static-data:
