@@ -25,6 +25,7 @@ services:
       volumes:
         - static-data:/vol/static
         - logging:/vol/log/nginx
+        
 
 volumes:
     logging:

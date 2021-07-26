@@ -1,6 +1,5 @@
 .env
 virtualenv/
 __pycache__
-nginx/certs/PROD/*
-nginx/certs/DEV/*
-deployment.sh
+nginx/certs/PROD/fullchain.pem
+nginx/certs/PROD/privkey.pem
