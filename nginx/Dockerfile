@@ -19,10 +19,6 @@ RUN mkdir -p /vol/static && \
     chmod 755 /etc/nginx/snippets/ssl-params.conf && \
     chmod +x /run.sh
 
-#VOLUME /vol/static
-#VOLUME /vol/log/nginx
-#VOLUME /vol/certs
-
 USER nginx
 
 CMD ["/run.sh"]

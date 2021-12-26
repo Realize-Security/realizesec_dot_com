@@ -27,4 +27,3 @@ services:
 volumes:
     logging:
     static-data:
-#    /data/certs:
