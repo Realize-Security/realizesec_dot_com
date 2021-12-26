@@ -12,21 +12,19 @@ services:
       build: 
         context: ./nginx
         args:
-          SSL_PARAMS_PATH: "/etc/nginx/snippets/ssl-params.conf"
-          SSL_PRIVKEY: "realizesec.key"
-          SSL_FULLCHAIN: "realizesec.crt"
           DEPLOY_ENV: "DEV"
       restart: always
       ports:
-        - 443:443
-        - 80:80
+        - "443:443"
+        - "80:80"
       depends_on: 
         - app
       volumes:
         - static-data:/vol/static
         - logging:/vol/log/nginx
-        
+        - /data/certs:/vol/certs
 
 volumes:
     logging:
     static-data:
+#    /data/certs:
